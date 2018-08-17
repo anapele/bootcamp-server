@@ -23,15 +23,15 @@ const authenticate = async (req, res, next) => {
   if (token) {
     const decodedToken = await jwtVerify(token);
 
-    if(decodedToken && decodedToken.data && decodedToken.data.username) {
-        const { username } = decodedToken.data;
-        const user = await UserModel.getUserByName(username);
-        if(user) {
-          logger.log('debug', `User: ${username} was successfully authenticated`);
-          req.user = user;
-          return next();
-        }
-    }
+  if(decodedToken && decodedToken.data && decodedToken.data.username) {
+      const { username } = decodedToken.data;
+      const user = await UserModel.getUserByName(username);
+      if(user) {
+        logger.log('debug', `User: ${username} was successfully authenticated`);
+        req.user = user;
+        return next();
+      }
+  }
     return next(new AppError('Token is invalid', 401));
   }
   return next(new AppError('No token provided', 401));
